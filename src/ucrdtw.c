@@ -355,7 +355,7 @@ double dtw(double* A, double* B, double *cb, int m, int r, double best_so_far) {
 
 /// Calculate the nearest neighbor of a times series in a larger time series expressed as location and distance,
 /// using the UCR suite optimizations.
-int ucrdtw(double* data, long long data_size, double* query, long query_size, double warp_width, int curr_ind, int verbose, long long* location, double* distance) {
+int ucrdtw(double* data, long long data_size, double* query, long query_size, double warp_width, int curr_ind, int ez, int verbose, long long* location, double* distance) {
     long m = query_size;
     int r = warp_width <= 1 ? floor(warp_width * m) : floor(warp_width);
 
@@ -630,9 +630,9 @@ int ucrdtw(double* data, long long data_size, double* query, long query_size, do
                                 if (dist < best_so_far) {   /// Update best_so_far
                                                     /// loc is the real starting location of the nearest neighbor in the file
                                     
-				    /// prevent self matching
+				    /// prevent self matching within exclusion zone
 				    loc0 = (it) * (EPOCH - m + 1) + i - m + 1;
-				    if (curr_ind != loc0) {
+				    if ( (loc0 > (curr_ind + ez)) || (loc0 < (curr_ind - ez) ) {
 				        best_so_far = dist;
                                         loc = (it) * (EPOCH - m + 1) + i - m + 1;
 				    }
