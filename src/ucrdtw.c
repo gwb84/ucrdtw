@@ -346,6 +346,11 @@ double dtw(double* A, double* B, double *cb, int m, int r, double best_so_far) {
 
     /// the DTW distance is in the last cell in the matrix of size O(m^2) or at the middle of our array.
     double final_dtw = cost_prev[k];
+	
+    /// Prevent a trivial result for self similarity
+    if (final_dtw == 0) {
+        final_dtw = INF;
+    }
     free(cost);
     free(cost_prev);
     return final_dtw;
