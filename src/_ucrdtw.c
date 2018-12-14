@@ -58,11 +58,11 @@ static PyObject* ucrdtw_ucrdtw(PyObject* self, PyObject* args) {
     PyObject* data_obj = NULL;
     PyObject* query_obj = NULL;
     double warp_width = -1;
-    double curr_ind = -1;
+    int curr_ind = -1;
     PyObject* verbose_obj = NULL;
 
     /* Parse the input tuple */
-    if (!PyArg_ParseTuple(args, "OOd|O", &data_obj, &query_obj, &warp_width, &curr_ind, &verbose_obj)) {
+    if (!PyArg_ParseTuple(args, "OOdi|O", &data_obj, &query_obj, &warp_width, &curr_ind, &verbose_obj)) {
         return NULL;
     }
 
