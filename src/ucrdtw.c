@@ -347,10 +347,6 @@ double dtw(double* A, double* B, double *cb, int m, int r, double best_so_far) {
     /// the DTW distance is in the last cell in the matrix of size O(m^2) or at the middle of our array.
     double final_dtw = cost_prev[k];
 	
-    /// Prevent a trivial result for self similarity
-    if (final_dtw == 0) {
-        final_dtw = INF;
-    }
     free(cost);
     free(cost_prev);
     return final_dtw;
@@ -359,7 +355,7 @@ double dtw(double* A, double* B, double *cb, int m, int r, double best_so_far) {
 
 /// Calculate the nearest neighbor of a times series in a larger time series expressed as location and distance,
 /// using the UCR suite optimizations.
-int ucrdtw(double* data, long long data_size, double* query, long query_size, double warp_width, int verbose, long long* location, double* distance) {
+int ucrdtw(double* data, long long data_size, double* query, long query_size, double warp_width, int curr_ind, int verbose, long long* location, double* distance) {
     long m = query_size;
     int r = warp_width <= 1 ? floor(warp_width * m) : floor(warp_width);
 
@@ -373,6 +369,7 @@ int ucrdtw(double* data, long long data_size, double* query, long query_size, do
     double ex, ex2, mean, std;
 
     long long loc = 0;
+    long long loc0 = 0;
     double t1, t2;
     int kim = 0, keogh = 0, keogh2 = 0;
     double dist = 0, lb_kim = 0, lb_k = 0, lb_k2 = 0;
@@ -632,8 +629,13 @@ int ucrdtw(double* data, long long data_size, double* query, long query_size, do
 
                                 if (dist < best_so_far) {   /// Update best_so_far
                                                     /// loc is the real starting location of the nearest neighbor in the file
-                                    best_so_far = dist;
-                                    loc = (it) * (EPOCH - m + 1) + i - m + 1;
+                                    
+				    /// prevent self matching
+				    loc0 = (it) * (EPOCH - m + 1) + i - m + 1;
+				    if (curr_ind != loc0) {
+				        best_so_far = dist;
+                                        loc = (it) * (EPOCH - m + 1) + i - m + 1;
+				    }
                                 }
                             } else
                                 keogh2++;
