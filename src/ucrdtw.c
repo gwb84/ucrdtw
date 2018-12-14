@@ -632,7 +632,7 @@ int ucrdtw(double* data, long long data_size, double* query, long query_size, do
                                     
 				    /// prevent self matching within exclusion zone
 				    loc0 = (it) * (EPOCH - m + 1) + i - m + 1;
-				    if ( (loc0 > (curr_ind + ez)) || (loc0 < (curr_ind - ez) ) {
+				    if ( (loc0 > (curr_ind + ez)) || (loc0 < (curr_ind - ez) ) ) {
 				        best_so_far = dist;
                                         loc = (it) * (EPOCH - m + 1) + i - m + 1;
 				    }
