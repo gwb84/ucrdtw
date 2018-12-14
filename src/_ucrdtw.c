@@ -102,7 +102,7 @@ static PyObject* ucrdtw_ucrdtw(PyObject* self, PyObject* args) {
     /* Call the external C function to compute the best DTW location and distance. */
     long long location = -1;
     double distance = -1;
-    int status = ucrdtw(data, data_size, query, query_size, warp_width, verbose, &location, &distance);
+    int status = ucrdtw(data, data_size, query, query_size, warp_width, curr_ind, verbose, &location, &distance);
 
     /* Clean up. */
     Py_XDECREF(data_array);
